@@ -13,6 +13,8 @@ const app = express();
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
+app.use(express.static('public'));//set up our front end to enable stuff to be included
+
 
 //filter by query string
 function filterByQuery(query, animalsArray) {
@@ -114,6 +116,24 @@ app.post('/api/animals', (req, res) => {
     const animal = createNewAnimal(req.body, animals);
     res.json(animal);
   }
+});
+
+
+//Serve up index
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
+app.get('/animals', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/animals.html'));
+});
+
+app.get('/zookeepers', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/zookeepers.html'));
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
 //add a listener
